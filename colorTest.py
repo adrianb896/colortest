@@ -55,10 +55,12 @@ def openFile():
 
 
 if __name__ == '__main__':
-    window = Tk()
+    window = Tk(className='TARGEST')
+# set window size
+    window.geometry("150x100")
     button = Button(text="Open",command=openFile)
     button.pack()
-    Button(window, text="Quit", command=window.destroy).pack()
+    Button(window, text="Done ", command=window.destroy).pack()
     window.mainloop()
     #filepath2 = '"' + filepath + '"'
     #print(filepath2)
@@ -68,7 +70,7 @@ if __name__ == '__main__':
     #print(filepath3)
     fullText = readtxt(filename=filepath2,
                    color=(255, 0, 0))
-    print(fullText)
+    #print(fullText)
     #lister2 = [fullText]
     #d = ''.join(fullText)
     #print(fullText)
@@ -78,19 +80,16 @@ if __name__ == '__main__':
 
     #print(words)
 
-    #report = Document()
-#paragraph = report.add_paragraph(fullText[1])
-#paragraph = report.add_paragraph(fullText)
-#paragraph = report.add_paragraph(s)
-#report.save('report1.docx')
+    report = Document()
 
-
-    #w = (fullText.replace (']', ']\n'))
-    #paragraph = report.add_paragraph()
-    #runner = paragraph.add_run("\nSRS Ace Pump Document")
-    #runner.bold = True #makes the header bold
-    #paragraph = report.add_paragraph(w)
-    #report.save('report1.docx')
+    s = ''.join(fullText)
+    w = (s.replace (']', ']\n\n'))
+    print(w)
+    paragraph = report.add_paragraph()
+    runner = paragraph.add_run("\n" + filepath2)
+    runner.bold = True #makes the header bold
+    paragraph = report.add_paragraph(w)
+    report.save('report1.docx')
 
 
 
