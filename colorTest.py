@@ -51,25 +51,45 @@ def openFile():
 
     return filepath2
 
+def generateReport():
+    fullText = readtxt(filename=filepath2,
+                       color=(255, 0, 0))
+    s = ''.join(fullText)
+    w = (s.replace (']', ']\n\n'))
+    w = (w.replace ('\n[', '['))
+    print('\n' + w)
+    paragraph = report.add_paragraph()
+    runner = paragraph.add_run("\n" + filepath2)
+    runner.bold = True #makes the header bold
+    paragraph = report.add_paragraph(w)
+    report.save('report1.docx')
 
 
 
 if __name__ == '__main__':
+    report = Document()
     window = Tk(className='TARGEST')
 # set window size
     window.geometry("150x100")
-    button = Button(text="Open",command=openFile)
+    button = Button(text="Choose Document",command=openFile)
     button.pack()
-    Button(window, text="Done ", command=window.destroy).pack()
+    #Button(window, text="Generate Report ", command=window.destroy).pack()
+    #window.mainloop()
+
+    Button(window, text="Generate Report ", command=generateReport).pack()
+
+    button = Button(text="End Program",command=window.destroy)
+    button.pack()
+
     window.mainloop()
+
     #filepath2 = '"' + filepath + '"'
     #print(filepath2)
     #fullText = readtxt("testred.docx")
     #print(fullText)
     #filepath3 = filepath2
     #print(filepath3)
-    fullText = readtxt(filename=filepath2,
-                   color=(255, 0, 0))
+
     #print(fullText)
     #lister2 = [fullText]
     #d = ''.join(fullText)
@@ -79,17 +99,6 @@ if __name__ == '__main__':
     #words2 = d.split('')
 
     #print(words)
-
-    report = Document()
-
-    s = ''.join(fullText)
-    w = (s.replace (']', ']\n\n'))
-    print(w)
-    paragraph = report.add_paragraph()
-    runner = paragraph.add_run("\n" + filepath2)
-    runner.bold = True #makes the header bold
-    paragraph = report.add_paragraph(w)
-    report.save('report1.docx')
 
 
 
