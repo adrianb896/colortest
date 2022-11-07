@@ -19,11 +19,12 @@ def readtxt(filename, color: tuple[int, int, int]):
 
             sentence = "".join(r.text for r in para.runs)
             fullText.append(sentence)
-            print(sentence)
+            #print(sentence)
             text10 = sentence
-            new = (sentence.replace (']', ']\n\n'))
+            #new = (sentence.replace (']', ']\n\n'))
             parent.append("".join(r.text for r in para.runs))
 
+    print(fullText)
     return fullText, new
 
 def getcoloredTxt(runs, color):
@@ -37,10 +38,18 @@ def getcoloredTxt(runs, color):
         elif word != "":
             coloredWords.append(word)
             sentences.append(word)
+            parents.append(word)
             word = ""
-    if word != "":
+
+    if word == "":
+        noChild.append(word)
+
+    elif word != "":
         coloredWords.append(word + "\n")
         child.append(word)
+        withChild.append(word)
+
+
 
     return coloredWords
 
@@ -75,6 +84,7 @@ def generateReport():
     w = (w.replace (',', ''))
     w = (w.replace ('' '', ''))
     #print(w)
+    #print(fullText)
 
 
     table = report3.add_table(rows=1, cols=2)
@@ -101,14 +111,16 @@ def generateReport():
         #green.font.color.rgb = RGBColor(0x00, 0xFF, 0x00)
         #green.bold = True
         sentences.remove(sentences[0])
-        #red = paragraph.add_run(child[0])
-        row[1].text = child[0]
-        #paragraph.add_run("\n\n")
-        #red.bold = True
-        #red.font.color.rgb = RGBColor(255, 0, 0)
-        child.remove(child[0])
+        if child:
+            #red = paragraph.add_run(child[0])
+            row[1].text = child[0]
+            #paragraph.add_run("\n\n")
+            #red.bold = True
+            #red.font.color.rgb = RGBColor(255, 0, 0)
+            child.remove(child[0])
 
     while sentences:
+        row = table.add_row().cells # Adding a row and then adding data in it.
         row[0].text = sentences[0]
         #green = paragraph.add_run(sentences[0])
         #paragraph.add_run("\n\n")
@@ -128,6 +140,9 @@ if __name__ == '__main__':
     sentences = []
     parent = []
     child = []
+    noChild = []
+    withChild = []
+    parents = []
     report = Document()
     fulltext9 = ''.join(parent)
     g = str(fulltext9)
@@ -149,7 +164,9 @@ if __name__ == '__main__':
     #print(sentences) #parent tags
     #print(child) #child tags
     #print(parent)
-
+    print(noChild)
+    print(withChild)
+    print(parents)
 
     #filepath2 = '"' + filepath + '"'
     #print(filepath2)
