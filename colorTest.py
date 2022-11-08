@@ -3,6 +3,7 @@ from docx import Document
 from docx.shared import RGBColor
 from tkinter import *
 from tkinter import filedialog
+import re
 
 
 def readtxt(filename, color: tuple[int, int, int]):
@@ -24,8 +25,20 @@ def readtxt(filename, color: tuple[int, int, int]):
             #new = (sentence.replace (']', ']\n\n'))
             parent.append("".join(r.text for r in para.runs))
 
-    print(fullText)
-    return fullText, new
+
+
+    #print(fullText)
+    global filtered_L
+    global hasChild
+    global fullText2
+    filtered_L = [value for value in fullText if "[" not in value]
+    hasChild = [value for value in fullText if "[" in value]
+    fullText2 = [value for value in fullText]
+
+
+    #print(filtered_L)
+    #print(fullText)
+    return fullText, filtered_L, hasChild
 
 def getcoloredTxt(runs, color):
 
@@ -41,11 +54,12 @@ def getcoloredTxt(runs, color):
             parents.append(word)
             word = ""
 
-    if word == "":
-        noChild.append(word)
+    #if word == "":
+     #   noChild.append(word)
 
-    elif word != "":
+    if word != "":
         coloredWords.append(word + "\n")
+        #word = removeAfter(word)
         child.append(word)
         withChild.append(word)
 
@@ -72,6 +86,8 @@ def openFile():
 def generateReport():
     fullText = readtxt(filename=filepath2,
                        color=(255, 0, 0))
+    #filtered_L = readtxt(filename=filepath2,
+    #                   color=(255, 0, 0))
     fullText10 = str(fullText)
     s = ''.join(fullText10)
     w = (s.replace (']', ']\n\n'))
@@ -83,8 +99,9 @@ def generateReport():
     w = (w.replace ('([', ''))
     w = (w.replace (',', ''))
     w = (w.replace ('' '', ''))
+
     #print(w)
-    #print(fullText)
+    print(fullText)
 
 
     table = report3.add_table(rows=1, cols=2)
@@ -102,8 +119,14 @@ def generateReport():
     # Now save the document to a location
     report3.save('report3.docx')
 
-
-    while sentences and child:
+    #print(filtered_L)
+    #print(fullText)
+    #print(fullText2)
+    e = 0
+    print(child)
+    child2 = removeAfter(child) #removes everything after the child tag if there is anything to remove
+    print(child2)
+    while sentences and child2:
         row = table.add_row().cells # Adding a row and then adding data in it.
         row[0].text = sentences[0]
         #green = paragraph.add_run(sentences[0] + "    ")
@@ -111,13 +134,38 @@ def generateReport():
         #green.font.color.rgb = RGBColor(0x00, 0xFF, 0x00)
         #green.bold = True
         sentences.remove(sentences[0])
-        if child:
-            #red = paragraph.add_run(child[0])
-            row[1].text = child[0]
-            #paragraph.add_run("\n\n")
-            #red.bold = True
-            #red.font.color.rgb = RGBColor(255, 0, 0)
-            child.remove(child[0])
+        #print(fullText)
+        #print(filtered_L)
+
+
+        if e < len(fullText2):
+
+            if fullText2[e] in filtered_L:
+
+                #row = table.add_row().cells # Adding a row and then adding data in it.
+               # print("no child")
+                print("yes")
+
+                row[1].text = " "
+
+                e += 1
+
+
+            elif fullText2[e] not in filtered_L:
+                #print("has a child")
+                #print(fullText[e])
+                #row[1].text = "Has no child tag"
+                if child2:
+                        #red = paragraph.add_run(child[0])
+                    row[1].text = child2[0]
+                        #paragraph.add_run("\n\n")
+                        #red.bold = True
+                        #red.font.color.rgb = RGBColor(255, 0, 0)
+                    child2.remove(child2[0])
+
+                    e += 1
+
+
 
     while sentences:
         row = table.add_row().cells # Adding a row and then adding data in it.
@@ -127,9 +175,20 @@ def generateReport():
         #green.font.color.rgb = RGBColor(0x00, 0xFF, 0x00)
         #green.bold = True
         sentences.remove(sentences[0])
+    child2.clear()
+    sentences.clear()
+    child.clear()
     paragraph.add_run(f)
     report3.save('report3.docx')
 
+
+def removeAfter(childtags): #removes everything after the child tag, example "pass"
+    seperator = ']'
+    childAfter = [i.rsplit(']', 1)[0] + seperator for i in childtags]
+   # childAfter = [ s[:s.find("0]",s.find(".")-1)] + seperator for s in childtags]
+
+    #childAfter = [i.split(']', -1)[0] + seperator for i in childtags]
+    return childAfter
 
 
 if __name__ == '__main__':
@@ -164,9 +223,9 @@ if __name__ == '__main__':
     #print(sentences) #parent tags
     #print(child) #child tags
     #print(parent)
-    print(noChild)
-    print(withChild)
-    print(parents)
+    #print(noChild)
+    #print(withChild)
+    #print(parents)
 
     #filepath2 = '"' + filepath + '"'
     #print(filepath2)
