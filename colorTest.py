@@ -17,6 +17,10 @@ from docx import Document
 from docx.shared import RGBColor
 from tkinter import *
 from tkinter import filedialog
+import os
+import subprocess, platform
+from PIL import Image, ImageTk
+
 
 def readtxt(filename, color: tuple[int, int, int]):
     doc = docx.Document(filename)
@@ -199,6 +203,16 @@ def removeAfter(childtags): #removes everything after the child tag, example "pa
 
     return childAfter
 
+def getDocument():
+    if platform.system() == 'Darwin':
+        subprocess.check_call(['open', 'report3.docx'])
+    elif platform.system() == 'Windows':
+        os.startfile("report3.docx")
+    # os.startfile(report3) # try either one for windows if the first option gives error
+    else:
+        subprocess.call('xdg-open', report3)  # for other linux platforms
+
+
 
 if __name__ == '__main__':
     # Creates a word document, saves it as "report 3, and also adds a heading
@@ -221,10 +235,13 @@ if __name__ == '__main__':
 
 # Creates the gui
     window = Tk(className=' TARGEST')
-    p1 = PhotoImage(file = 'NorwegianFlag.png')
+    window.p1 = PhotoImage(file='NorwegianFlag.png')
+    #p2 = Image.open('NorwegianFlag.png')
+    #render = ImageTk.PhotoImage(p2)
+
 
 # Setting icon of master window
-    window.iconphoto(False, p1)
+    window.iconphoto(False, window.p1)
 # set window size
     window.geometry("150x100")
 # Creates button 1
@@ -233,6 +250,9 @@ if __name__ == '__main__':
 # Creates button 2
     Button(window, text="Generate Report ", command=generateReport).pack()
 # Creates button 3
+    getDoc = Button(window, text="Open Generated Report", command=getDocument)
+    getDoc.pack()
+# Creates button 4
     button = Button(text="End Program",command=window.destroy)
     button.pack()
 
