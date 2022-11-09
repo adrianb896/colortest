@@ -12,14 +12,14 @@
 # if you use python version 3.9 no changes in code is needed,
 # if you use Version 3.7: You have to change "tuple" to "Tuple" on line 8
 
+import os
+import platform
+import subprocess
+from tkinter import *
+from tkinter import filedialog
 import docx
 from docx import Document
 from docx.shared import RGBColor
-from tkinter import *
-from tkinter import filedialog
-import os
-import subprocess, platform
-from PIL import Image, ImageTk
 
 
 def readtxt(filename, color: tuple[int, int, int]):
