@@ -220,8 +220,8 @@ if __name__ == '__main__':
     #f = (g.replace (']', ']\n\n'))
 
 # Creates the gui
-    window = Tk(className='TARGEST')
-    p1 = PhotoImage(file = 'NorwegianFlag.png')
+    window = Tk(className=' TARGEST')
+    p1 = PhotoImage(file = 'logo.png')
 
 # Setting icon of master window
     window.iconphoto(False, p1)
