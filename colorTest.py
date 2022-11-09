@@ -221,6 +221,10 @@ if __name__ == '__main__':
 
 # Creates the gui
     window = Tk(className='TARGEST')
+    p1 = PhotoImage(file = 'NorwegianFlag.png')
+
+# Setting icon of master window
+    window.iconphoto(False, p1)
 # set window size
     window.geometry("150x100")
 # Creates button 1
